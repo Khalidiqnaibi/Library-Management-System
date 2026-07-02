@@ -1,10 +1,13 @@
 package immortal.librarymanagementsystem.Entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Author {
     private String name;
-    private int id;
+    private Long id;
 
-    public Author(int id, String name) {
+    public Author(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -17,11 +20,11 @@ public class Author {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

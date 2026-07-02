@@ -1,10 +1,13 @@
 package immortal.librarymanagementsystem.Entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Category {
     private String name;
-    private int id;
+    private Long id;
 
-    public Category(String name, int id) {
+    public Category(String name, Long id) {
         this.name = name;
         this.id = id;
     }
@@ -17,11 +20,11 @@ public class Category {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
