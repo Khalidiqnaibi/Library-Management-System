@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 public class Category {
+    @Column(nullable = false)
     private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Category(String name, Long id) {

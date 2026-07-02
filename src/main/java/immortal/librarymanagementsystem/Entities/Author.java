@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 public class Author {
+    @Column(nullable = false)
     private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Author(Long id, String name) {

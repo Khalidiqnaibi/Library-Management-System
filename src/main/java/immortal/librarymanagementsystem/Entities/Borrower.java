@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 public class Borrower {
+    @Column(nullable = false)
     private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Borrower(String name, Long id) {

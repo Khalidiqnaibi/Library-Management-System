@@ -66,7 +66,11 @@ public class Book {
         return this.borrower == null;
     }
 
-    public void Borrow(Borrower brrower){
+    public Borrower getBorrower() {
+        return borrower;
+    }
+
+    public void Borrow(Borrower borrower){
         if (this.borrower != null){
             return;
         }
