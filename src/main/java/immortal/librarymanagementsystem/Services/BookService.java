@@ -1,13 +1,15 @@
 package immortal.librarymanagementsystem.Services;
 
-import immortal.librarymanagementsystem.Entities.Author;
-import immortal.librarymanagementsystem.Entities.Book;
-import immortal.librarymanagementsystem.Entities.Category;
+import immortal.librarymanagementsystem.DTOs.Book.BookRequestDTO;
+import immortal.librarymanagementsystem.DTOs.Book.BookResponseDTO;
+
+import java.util.List;
 
 public interface BookService {
-    Book readBook(Long id);
-    void createBook(Long id , String title, Category category , Author author);
-    void updateBook(Long id, Book book);
-    Book readBookByTitle(String title);
+    BookResponseDTO readBook(Long id);
+    List<BookRequestDTO> readAllBooks();
+    BookResponseDTO createBook(BookRequestDTO bookRequestDTO);
+    BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO);
+    BookResponseDTO readBookByTitle(String title);
     void deleteBook(Long id);
 }

@@ -1,10 +1,15 @@
 package immortal.librarymanagementsystem.Services;
 
-import immortal.librarymanagementsystem.Entities.Category;
+
+import immortal.librarymanagementsystem.DTOs.Category.CategoryRequestDTO;
+import immortal.librarymanagementsystem.DTOs.Category.CategoryResponseDTO;
+
+import java.util.List;
 
 public interface CategoryService {
-    void createCategory(Long id, String name);
-    Category readCategory(Long id);
-    void updateCategory(Long id, Category category);
+    CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO);
+    CategoryResponseDTO readCategory(Long id);
+    List<CategoryResponseDTO> readAllCategories();
+    CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO categoryRequestDTO);
     void deleteCategory(Long id);
 }

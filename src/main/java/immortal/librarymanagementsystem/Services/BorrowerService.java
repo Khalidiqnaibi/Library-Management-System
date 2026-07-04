@@ -1,10 +1,14 @@
 package immortal.librarymanagementsystem.Services;
 
-import immortal.librarymanagementsystem.Entities.Borrower;
+import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerRequestDTO;
+import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerResponseDTO;
+
+import java.util.List;
 
 public interface BorrowerService {
-    void createBorrower(Long id , String name);
-    Borrower readBorrower(Long id);
-    void updateBorrower(Long id , Borrower borrower);
+    BorrowerResponseDTO createBorrower(BorrowerRequestDTO borrowerRequestDTO);
+    BorrowerResponseDTO readBorrower(Long id);
+    List<BorrowerResponseDTO> readAllBorrowers();
+    BorrowerResponseDTO updateBorrower(Long id , BorrowerRequestDTO borrowerRequestDTO);
     void deleteBorrower(Long id);
 }
