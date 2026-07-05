@@ -63,7 +63,7 @@ public class Book {
     }
 
     public boolean isBorrowed(){
-        return this.borrower == null;
+        return this.borrower != null;
     }
 
     public Borrower getBorrower() {
@@ -71,13 +71,6 @@ public class Book {
     }
 
     public void setBorrower(Borrower borrower) {
-        this.borrower = borrower;
-    }
-
-    public void Borrow(Borrower borrower){
-        if (this.isBorrowed()){
-            return;
-        }
         this.borrower = borrower;
     }
 }
