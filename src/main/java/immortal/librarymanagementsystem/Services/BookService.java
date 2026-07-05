@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookService {
     BookResponseDTO readBook(Long id);
-    List<BookRequestDTO> readAllBooks();
+    List<BookResponseDTO> readAllBooks();
     BookResponseDTO createBook(BookRequestDTO bookRequestDTO);
     BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO);
     BookResponseDTO readBookByTitle(String title);

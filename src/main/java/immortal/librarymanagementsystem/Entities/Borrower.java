@@ -15,6 +15,9 @@ public class Borrower {
         this.id = id;
     }
 
+    public Borrower() {
+    }
+
     public String getName() {
         return name;
     }

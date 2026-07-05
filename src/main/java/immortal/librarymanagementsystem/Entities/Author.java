@@ -27,6 +27,9 @@ public class Author {
         return id;
     }
 
+    public Author() {
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

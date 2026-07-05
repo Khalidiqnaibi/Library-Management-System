@@ -70,8 +70,12 @@ public class Book {
         return borrower;
     }
 
+    public void setBorrower(Borrower borrower) {
+        this.borrower = borrower;
+    }
+
     public void Borrow(Borrower borrower){
-        if (this.borrower != null){
+        if (this.isBorrowed()){
             return;
         }
         this.borrower = borrower;

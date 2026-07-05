@@ -7,6 +7,7 @@ import immortal.librarymanagementsystem.Repositories.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -16,32 +17,41 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public AuthorServiceImpl() {
-    }
-
     @Override
     public AuthorResponseDTO createAuthor(AuthorRequsetDTO authorRequsetDTO) {
-
-        return null;
+        Author author = new Author();
+        author.setName(authorRequsetDTO.getName());
+        Author savedAuthor = authorRepository.save(author);
+        return ConvertToResponseDTO(savedAuthor);
     }
 
     @Override
     public AuthorResponseDTO readAuthor(Long id) {
-        return null;
+        Author author = authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author ID: "+ id + " not found.."));
+        return ConvertToResponseDTO(author);
     }
 
     @Override
     public List<AuthorResponseDTO> readAllAuthors() {
-        return List.of();
+        List<Author> authors = authorRepository.findAll();
+
+        return authors.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+
     }
 
     @Override
     public AuthorResponseDTO updateAuthor(Long id, AuthorRequsetDTO authorRequsetDTO) {
-        return null;
+        Author author = authorRepository.findById(id).orElseThrow(()-> new RuntimeException("Update failed.. Author not found with the ID: "+id));
+        author.setName(authorRequsetDTO.getName());
+        Author updatedAuthor = authorRepository.save(author);
+        return ConvertToResponseDTO(updatedAuthor);
     }
 
     @Override
     public void deleteAuthor(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(()->new RuntimeException("Delete failed.. Author not found with the ID: "+id));
+
+        authorRepository.delete(author);
 
     }
 

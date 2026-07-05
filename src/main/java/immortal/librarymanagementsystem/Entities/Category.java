@@ -27,6 +27,9 @@ public class Category {
         return id;
     }
 
+    public Category() {
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
