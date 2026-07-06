@@ -2,11 +2,11 @@ package immortal.librarymanagementsystem.DTOs.Author;
 
 import jakarta.validation.constraints.NotNull;
 
-public class AuthorRequsetDTO {
+public class AuthorRequestDTO {
     @NotNull(message = "Author name is required")
     private String name;
 
-    public AuthorRequsetDTO(String name) {
+    public AuthorRequestDTO(String name) {
         this.name = name;
     }
 
@@ -18,6 +18,6 @@ public class AuthorRequsetDTO {
         this.name = name;
     }
 
-    public AuthorRequsetDTO() {
+    public AuthorRequestDTO() {
     }
 }

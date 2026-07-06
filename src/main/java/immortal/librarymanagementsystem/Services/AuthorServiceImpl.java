@@ -1,6 +1,6 @@
 package immortal.librarymanagementsystem.Services;
 
-import immortal.librarymanagementsystem.DTOs.Author.AuthorRequsetDTO;
+import immortal.librarymanagementsystem.DTOs.Author.AuthorRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Author.AuthorResponseDTO;
 import immortal.librarymanagementsystem.Entities.Author;
 import immortal.librarymanagementsystem.Repositories.AuthorRepository;
@@ -18,9 +18,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorResponseDTO createAuthor(AuthorRequsetDTO authorRequsetDTO) {
+    public AuthorResponseDTO createAuthor(AuthorRequestDTO authorRequestDTO) {
         Author author = new Author();
-        author.setName(authorRequsetDTO.getName());
+        author.setName(authorRequestDTO.getName());
         Author savedAuthor = authorRepository.save(author);
         return ConvertToResponseDTO(savedAuthor);
     }
@@ -40,9 +40,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorResponseDTO updateAuthor(Long id, AuthorRequsetDTO authorRequsetDTO) {
+    public AuthorResponseDTO updateAuthor(Long id, AuthorRequestDTO authorRequestDTO) {
         Author author = authorRepository.findById(id).orElseThrow(()-> new RuntimeException("Update failed.. Author not found with the ID: "+id));
-        author.setName(authorRequsetDTO.getName());
+        author.setName(authorRequestDTO.getName());
         Author updatedAuthor = authorRepository.save(author);
         return ConvertToResponseDTO(updatedAuthor);
     }
