@@ -5,6 +5,9 @@ import immortal.librarymanagementsystem.DTOs.Book.BookResponseDTO;
 import immortal.librarymanagementsystem.Entities.Author;
 import immortal.librarymanagementsystem.Entities.Borrower;
 import immortal.librarymanagementsystem.Entities.Category;
+import immortal.librarymanagementsystem.Exceptions.BookAlreadyBorrowedException;
+import immortal.librarymanagementsystem.Exceptions.BookNotBorrowed;
+import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.AuthorRepository;
 import immortal.librarymanagementsystem.Repositories.BookRepository;
 import immortal.librarymanagementsystem.Entities.Book;
@@ -29,7 +32,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookResponseDTO readBook(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book with the ID: "+id+" not found"));
+        Book book = bookRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Book with the ID: "+id+" not found"));
         return ConvertToResponseDTO(book);
     }
 
@@ -45,11 +48,11 @@ public class BookServiceImpl implements BookService{
         book.setTitle(bookRequestDTO.getTitle());
 
         Long authorId = bookRequestDTO.getAuthorId();
-        Author author = authorRepository.findById(authorId).orElseThrow(()-> new RuntimeException("Creating book failed.. no Author with ID: "+authorId+" was found"));
+        Author author = authorRepository.findById(authorId).orElseThrow(()-> new ResourceNotFoundException("Creating book failed.. no Author with ID: "+authorId+" was found"));
         book.setAuthor(author);
 
         Long categoryId = bookRequestDTO.getCategoryId();
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new RuntimeException("Creating book failed.. no Category with ID: "+categoryId+" was found"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Creating book failed.. no Category with ID: "+categoryId+" was found"));
         book.setCategory(category);
 
         book.setBorrower(null);
@@ -61,15 +64,15 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO) {
-        Book book = bookRepository.findById(id).orElseThrow(()-> new RuntimeException("Update failed.. no Book with ID: "+id+" was found"));
+        Book book = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Update failed.. no Book with ID: "+id+" was found"));
         book.setTitle(bookRequestDTO.getTitle());
 
         Long authorId = bookRequestDTO.getAuthorId();
-        Author author = authorRepository.findById(authorId).orElseThrow(()-> new RuntimeException("update Book failed.. no Author with ID: "+authorId+" was found"));
+        Author author = authorRepository.findById(authorId).orElseThrow(()-> new ResourceNotFoundException("update Book failed.. no Author with ID: "+authorId+" was found"));
         book.setAuthor(author);
 
         Long categoryId = bookRequestDTO.getCategoryId();
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new RuntimeException("update Book failed.. no Category with ID: "+categoryId+" was found"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("update Book failed.. no Category with ID: "+categoryId+" was found"));
         book.setCategory(category);
 
         Book savedBook = bookRepository.save(book);
@@ -105,18 +108,18 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void deleteBook(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(()-> new RuntimeException("Delete failed.. no Book with ID: "+id+" was found"));
+        Book book = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Delete failed.. no Book with ID: "+id+" was found"));
 
         bookRepository.delete(book);
     }
 
     @Override
     public BookResponseDTO borrowBook(Long bookId, Long borrowerId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(()-> new RuntimeException("Borrowing failed.. no Book with ID: "+bookId+" was found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(()-> new ResourceNotFoundException("Borrowing failed.. no Book with ID: "+bookId+" was found"));
 
-        Borrower borrower = borrowerRepository.findById(borrowerId).orElseThrow(()-> new RuntimeException("Borrowing failed.. no Borrower with ID: "+borrowerId+" was found"));
+        Borrower borrower = borrowerRepository.findById(borrowerId).orElseThrow(()-> new ResourceNotFoundException("Borrowing failed.. no Borrower with ID: "+borrowerId+" was found"));
         if(book.isBorrowed()){
-            throw new RuntimeException("Borrowing failed.. Book with ID: "+bookId+" is already borrowed");
+            throw new BookAlreadyBorrowedException("Borrowing failed.. Book with ID: "+bookId+" is already borrowed");
         }
         book.setBorrower(borrower);
         Book savedBook = bookRepository.save(book);
@@ -125,9 +128,9 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public void returnBook(Long bookId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(()-> new RuntimeException("Returning failed.. no Book with ID: "+bookId+" was found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(()-> new ResourceNotFoundException("Returning failed.. no Book with ID: "+bookId+" was found"));
         if(!book.isBorrowed()){
-            throw new RuntimeException("Returning failed.. Book with ID: "+bookId+" is not borrowed");
+            throw new BookNotBorrowed("Returning failed.. Book with ID: "+bookId+" is not borrowed");
         }
         book.setBorrower(null);
         Book savedBook = bookRepository.save(book);

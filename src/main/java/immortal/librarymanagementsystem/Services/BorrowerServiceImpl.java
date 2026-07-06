@@ -3,6 +3,7 @@ package immortal.librarymanagementsystem.Services;
 import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerResponseDTO;
 import immortal.librarymanagementsystem.Entities.Borrower;
+import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.BorrowerRepository;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class BorrowerServiceImpl implements BorrowerService{
 
     @Override
     public BorrowerResponseDTO readBorrower(Long id) {
-        Borrower borrower = borrowerRepository.findById(id).orElseThrow(() -> new RuntimeException("Borrower with ID: "+id+" Not found"));
+        Borrower borrower = borrowerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Borrower with ID: "+id+" Not found"));
 
         return ConvertToResponseDTO(borrower);
     }
@@ -41,7 +42,7 @@ public class BorrowerServiceImpl implements BorrowerService{
 
     @Override
     public BorrowerResponseDTO updateBorrower(Long id, BorrowerRequestDTO borrowerRequestDTO) {
-        Borrower borrower = borrowerRepository.findById(id).orElseThrow(()-> new RuntimeException("Update failed.. no Borrower with ID: "+id));
+        Borrower borrower = borrowerRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Update failed.. no Borrower with ID: "+id));
 
         borrower.setName(borrowerRequestDTO.getName());
         Borrower savedBorrower = borrowerRepository.save(borrower);
@@ -50,7 +51,7 @@ public class BorrowerServiceImpl implements BorrowerService{
 
     @Override
     public void deleteBorrower(Long id) {
-        Borrower borrower = borrowerRepository.findById(id).orElseThrow(()-> new RuntimeException("Delete failed.. no Borrower with ID: "+id));
+        Borrower borrower = borrowerRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Delete failed.. no Borrower with ID: "+id));
         borrowerRepository.delete(borrower);
     }
 

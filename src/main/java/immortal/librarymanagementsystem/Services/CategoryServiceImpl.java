@@ -2,7 +2,9 @@ package immortal.librarymanagementsystem.Services;
 
 import immortal.librarymanagementsystem.DTOs.Category.CategoryRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Category.CategoryResponseDTO;
+import immortal.librarymanagementsystem.Entities.Borrower;
 import immortal.librarymanagementsystem.Entities.Category;
+import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.CategoryRepository;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryResponseDTO readCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Category with ID: "+id+ " not found"));
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category with ID: "+id+ " not found"));
 
         return ConvertToResponseDTO(category);
     }
@@ -39,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO categoryRequestDTO) {
-        Category category = new Category();
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Update failed.. no Borrower with ID: "+id));
         category.setName(categoryRequestDTO.getName());
 
         Category savedCategory = categoryRepository.save(category);
@@ -48,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(()->new RuntimeException("Delete failed.. Category not found with ID: "+id));
+        Category category = categoryRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Delete failed.. Category not found with ID: "+id));
         categoryRepository.delete(category);
     }
 

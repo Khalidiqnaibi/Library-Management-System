@@ -3,6 +3,7 @@ package immortal.librarymanagementsystem.Services;
 import immortal.librarymanagementsystem.DTOs.Author.AuthorRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Author.AuthorResponseDTO;
 import immortal.librarymanagementsystem.Entities.Author;
+import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.AuthorRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorResponseDTO readAuthor(Long id) {
-        Author author = authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Author ID: "+ id + " not found.."));
+        Author author = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author ID: "+ id + " not found.."));
         return ConvertToResponseDTO(author);
     }
 
@@ -41,7 +42,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorResponseDTO updateAuthor(Long id, AuthorRequestDTO authorRequestDTO) {
-        Author author = authorRepository.findById(id).orElseThrow(()-> new RuntimeException("Update failed.. Author not found with the ID: "+id));
+        Author author = authorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Update failed.. Author not found with the ID: "+id));
         author.setName(authorRequestDTO.getName());
         Author updatedAuthor = authorRepository.save(author);
         return ConvertToResponseDTO(updatedAuthor);
@@ -49,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthor(Long id) {
-        Author author = authorRepository.findById(id).orElseThrow(()->new RuntimeException("Delete failed.. Author not found with the ID: "+id));
+        Author author = authorRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Delete failed.. Author not found with the ID: "+id));
 
         authorRepository.delete(author);
 
