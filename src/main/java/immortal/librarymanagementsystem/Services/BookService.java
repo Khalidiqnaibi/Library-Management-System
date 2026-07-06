@@ -2,6 +2,7 @@ package immortal.librarymanagementsystem.Services;
 
 import immortal.librarymanagementsystem.DTOs.Book.BookRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Book.BookResponseDTO;
+import immortal.librarymanagementsystem.Repositories.BookRepository;
 
 import java.util.List;
 
@@ -12,7 +13,11 @@ public interface BookService {
     BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO);
     void deleteBook(Long id);
 
-//    BookResponseDTO readBookByTitle(String title);
-    BookResponseDTO BorrowBook(Long bookId, Long borrowerId);
-    void ReturnBook(Long bookId);
+    List<BookResponseDTO> findBookByTitle(String title);
+    List<BookResponseDTO> filterBooksByCategory(Long categoryId);
+    List<BookResponseDTO> filterBooksByAuthor(Long authorId);
+    List<BookResponseDTO> readAvailableBooks();
+
+    BookResponseDTO borrowBook(Long bookId, Long borrowerId);
+    void returnBook(Long bookId);
 }

@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService{
         Author author = authorRepository.findById(authorId).orElseThrow(()-> new RuntimeException("Creating book failed.. no Author with ID: "+authorId+" was found"));
         book.setAuthor(author);
 
-        Long categoryId = bookRequestDTO.getCategoryID();
+        Long categoryId = bookRequestDTO.getCategoryId();
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new RuntimeException("Creating book failed.. no Category with ID: "+categoryId+" was found"));
         book.setCategory(category);
 
@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService{
         Author author = authorRepository.findById(authorId).orElseThrow(()-> new RuntimeException("update Book failed.. no Author with ID: "+authorId+" was found"));
         book.setAuthor(author);
 
-        Long categoryId = bookRequestDTO.getCategoryID();
+        Long categoryId = bookRequestDTO.getCategoryId();
         Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new RuntimeException("update Book failed.. no Category with ID: "+categoryId+" was found"));
         book.setCategory(category);
 
@@ -77,10 +77,31 @@ public class BookServiceImpl implements BookService{
         return ConvertToResponseDTO(savedBook);
     }
 
-//    @Override
-//    public BookResponseDTO readBookByTitle(String title) {
-//        Book book = bookRepository.findBy();
-//    }
+    @Override
+    public List<BookResponseDTO> findBookByTitle(String title) {
+        List<Book> books = bookRepository.findByTitleContainingIgnoreCase(title);
+
+        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponseDTO> filterBooksByCategory(Long categoryId) {
+        List<Book> books = bookRepository.findByCategoryId(categoryId);
+        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponseDTO> filterBooksByAuthor(Long authorId) {
+        List<Book> books = bookRepository.findByAuthorId(authorId);
+
+        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookResponseDTO> readAvailableBooks() {
+        List<Book> books = bookRepository.findByBorrowerIsNull();
+        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    }
 
     @Override
     public void deleteBook(Long id) {
@@ -90,7 +111,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public BookResponseDTO BorrowBook(Long bookId, Long borrowerId) {
+    public BookResponseDTO borrowBook(Long bookId, Long borrowerId) {
         Book book = bookRepository.findById(bookId).orElseThrow(()-> new RuntimeException("Borrowing failed.. no Book with ID: "+bookId+" was found"));
 
         Borrower borrower = borrowerRepository.findById(borrowerId).orElseThrow(()-> new RuntimeException("Borrowing failed.. no Borrower with ID: "+borrowerId+" was found"));
@@ -103,7 +124,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void ReturnBook(Long bookId) {
+    public void returnBook(Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(()-> new RuntimeException("Returning failed.. no Book with ID: "+bookId+" was found"));
         if(!book.isBorrowed()){
             throw new RuntimeException("Returning failed.. Book with ID: "+bookId+" is not borrowed");

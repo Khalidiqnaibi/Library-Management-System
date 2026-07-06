@@ -1,9 +1,11 @@
 package immortal.librarymanagementsystem.DTOs.Category;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class CategoryRequestDTO {
-    @NotNull(message = "Category name is required")
+    @NotBlank(message = "Category name is required")
+    @Size(min = 2 , max = 100, message = "Category must be between 2 and 100 characters")
     private String name;
 
     public String getName() {
