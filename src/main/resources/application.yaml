@@ -1,3 +1,11 @@
 spring:
   application:
     name: LibraryManagementSystem
+  datasource:
+    url: JDBC:postgresql://localhost:5432/library_management_system
+    username: your_postgres_username
+    password: your_postgres_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
