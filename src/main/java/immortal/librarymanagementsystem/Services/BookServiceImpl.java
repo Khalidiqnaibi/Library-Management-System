@@ -13,10 +13,12 @@ import immortal.librarymanagementsystem.Repositories.BookRepository;
 import immortal.librarymanagementsystem.Entities.Book;
 import immortal.librarymanagementsystem.Repositories.BorrowerRepository;
 import immortal.librarymanagementsystem.Repositories.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class BookServiceImpl implements BookService{
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;

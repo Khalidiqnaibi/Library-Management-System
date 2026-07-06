@@ -18,12 +18,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BookAlreadyBorrowedException.class)
     public ResponseEntity<Map<String,String>> handleBookAlreadyBorrowedException(BookAlreadyBorrowedException ex){
-        return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String,String>> handleResourceNotFoundException(ResourceNotFoundException ex){
-        return new ResponseEntity<>(Map.of("error",ex.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Map.of("error",ex.getMessage()),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookNotBorrowed.class)
