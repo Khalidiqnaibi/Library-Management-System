@@ -13,6 +13,8 @@ import immortal.librarymanagementsystem.Repositories.BookRepository;
 import immortal.librarymanagementsystem.Entities.Book;
 import immortal.librarymanagementsystem.Repositories.BorrowerRepository;
 import immortal.librarymanagementsystem.Repositories.CategoryRepository;
+import immortal.librarymanagementsystem.Specifications.BookSpecifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -83,28 +85,12 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookResponseDTO> findBookByTitle(String title) {
-        List<Book> books = bookRepository.findByTitleContainingIgnoreCase(title);
+    public List<BookResponseDTO> searchBook(String title, Long authorId, Long categoryId, Boolean availableOnly) {
+        boolean safeAvailableOnly = Boolean.TRUE.equals(availableOnly);
 
-        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
-    }
+        Specification<Book> spec = BookSpecifications.filterBooks(title, authorId, categoryId, safeAvailableOnly);
+        List<Book> books = bookRepository.findAll(spec);
 
-    @Override
-    public List<BookResponseDTO> filterBooksByCategory(Long categoryId) {
-        List<Book> books = bookRepository.findByCategoryId(categoryId);
-        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<BookResponseDTO> filterBooksByAuthor(Long authorId) {
-        List<Book> books = bookRepository.findByAuthorId(authorId);
-
-        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<BookResponseDTO> readAvailableBooks() {
-        List<Book> books = bookRepository.findByBorrowerIsNull();
         return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
     }
 

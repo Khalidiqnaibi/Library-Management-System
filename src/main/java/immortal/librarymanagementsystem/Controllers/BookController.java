@@ -69,35 +69,14 @@ public class BookController {
         return ResponseEntity.ok("Book returned successfully");
     }
 
-    @GetMapping("/available")
-    public ResponseEntity<List<BookResponseDTO>> readAvailableBooks(){
-        List<BookResponseDTO> books = bookService.readAvailableBooks();
-        return ResponseEntity.ok(books);
-    }
+    @GetMapping("/search")
+    public ResponseEntity<List<BookResponseDTO>> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Boolean availableOnly) {
 
-    @GetMapping("/filter/category/{categoryId}")
-    public ResponseEntity<List<BookResponseDTO>> filterByCategory(@PathVariable Long categoryId){
-        List<BookResponseDTO> bookResponseDTOS = bookService.filterBooksByCategory(categoryId);
-
-        return ResponseEntity.ok(bookResponseDTOS);
-
-    }
-
-
-    @GetMapping("/filter/author/{authorId}")
-    public ResponseEntity<List<BookResponseDTO>> filterByAuthor(@PathVariable Long authorId){
-        List<BookResponseDTO> bookResponseDTOS = bookService.filterBooksByAuthor(authorId);
-
-        return ResponseEntity.ok(bookResponseDTOS);
-
-    }
-
-    @GetMapping("/filter/{title}")
-    public ResponseEntity<List<BookResponseDTO>> findBookByTitle(@PathVariable String title){
-        List<BookResponseDTO> bookResponseDTOS = bookService.findBookByTitle(title);
-
-        return ResponseEntity.ok(bookResponseDTOS);
-
+        return ResponseEntity.ok(bookService.searchBook(title, authorId, categoryId, availableOnly));
     }
 
 

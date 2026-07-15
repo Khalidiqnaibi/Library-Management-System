@@ -13,10 +13,7 @@ public interface BookService {
     BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO);
     void deleteBook(Long id);
 
-    List<BookResponseDTO> findBookByTitle(String title);
-    List<BookResponseDTO> filterBooksByCategory(Long categoryId);
-    List<BookResponseDTO> filterBooksByAuthor(Long authorId);
-    List<BookResponseDTO> readAvailableBooks();
+    List<BookResponseDTO> searchBook(String title,Long authorId,Long categoryId,Boolean availableOnly);
 
     BookResponseDTO borrowBook(Long bookId, Long borrowerId);
     void returnBook(Long bookId);
