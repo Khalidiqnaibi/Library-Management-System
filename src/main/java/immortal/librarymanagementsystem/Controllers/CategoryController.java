@@ -4,6 +4,7 @@ import immortal.librarymanagementsystem.DTOs.Category.CategoryRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Category.CategoryResponseDTO;
 import immortal.librarymanagementsystem.Services.CategoryService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories(){
-        List<CategoryResponseDTO> categories = categoryService.readAllCategories();
+    public ResponseEntity<Page<CategoryResponseDTO>> getAllCategories(@RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size){
+        Page<CategoryResponseDTO> categories = categoryService.readAllCategories(page, size);
 
         return ResponseEntity.ok(categories);
 

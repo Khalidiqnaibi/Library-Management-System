@@ -5,6 +5,9 @@ import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerResponseDTO;
 import immortal.librarymanagementsystem.Entities.Borrower;
 import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.BorrowerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,10 +38,11 @@ public class BorrowerServiceImpl implements BorrowerService{
     }
 
     @Override
-    public List<BorrowerResponseDTO> readAllBorrowers() {
-        List<Borrower> borrowers = borrowerRepository.findAll();
+    public Page<BorrowerResponseDTO> readAllBorrowers(int page , int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Borrower> borrowers = borrowerRepository.findAll(pageable);
 
-        return borrowers.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+        return borrowers.map(this::ConvertToResponseDTO);
 
     }
 

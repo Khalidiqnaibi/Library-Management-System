@@ -14,6 +14,9 @@ import immortal.librarymanagementsystem.Entities.Book;
 import immortal.librarymanagementsystem.Repositories.BorrowerRepository;
 import immortal.librarymanagementsystem.Repositories.CategoryRepository;
 import immortal.librarymanagementsystem.Specifications.BookSpecifications;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -85,13 +88,16 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookResponseDTO> searchBook(String title, Long authorId, Long categoryId, Boolean availableOnly) {
+    public Page<BookResponseDTO> searchBook(String title, Long authorId, Long categoryId, Boolean availableOnly,int page , int size) {
+        Pageable pageable = PageRequest.of(page,size);
         boolean safeAvailableOnly = Boolean.TRUE.equals(availableOnly);
 
         Specification<Book> spec = BookSpecifications.filterBooks(title, authorId, categoryId, safeAvailableOnly);
-        List<Book> books = bookRepository.findAll(spec);
 
-        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+
+        Page<Book> books = bookRepository.findAll(spec,pageable);
+
+        return books.map(this::ConvertToResponseDTO);
     }
 
     @Override

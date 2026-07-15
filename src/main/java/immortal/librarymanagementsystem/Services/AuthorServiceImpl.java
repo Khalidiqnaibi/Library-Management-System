@@ -5,6 +5,9 @@ import immortal.librarymanagementsystem.DTOs.Author.AuthorResponseDTO;
 import immortal.librarymanagementsystem.Entities.Author;
 import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.AuthorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +36,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorResponseDTO> readAllAuthors() {
-        List<Author> authors = authorRepository.findAll();
+    public Page<AuthorResponseDTO> readAllAuthors(int page , int size) {
+        Pageable pageable = PageRequest.of(page,size);
 
-        return authors.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+        Page<Author> authors = authorRepository.findAll(pageable);
+
+        return authors.map(this::ConvertToResponseDTO);
 
     }
 

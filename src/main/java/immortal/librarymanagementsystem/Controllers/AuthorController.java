@@ -4,6 +4,7 @@ import immortal.librarymanagementsystem.DTOs.Author.AuthorRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Author.AuthorResponseDTO;
 import immortal.librarymanagementsystem.Services.AuthorService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,9 @@ public class AuthorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AuthorResponseDTO>> getAllAuthors(){
-        List<AuthorResponseDTO> authors = authorService.readAllAuthors();
+    public ResponseEntity<Page<AuthorResponseDTO>> getAllAuthors(@RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size){
+        Page<AuthorResponseDTO> authors = authorService.readAllAuthors(page, size);
 
         return ResponseEntity.ok(authors);
 

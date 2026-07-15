@@ -6,6 +6,9 @@ import immortal.librarymanagementsystem.Entities.Borrower;
 import immortal.librarymanagementsystem.Entities.Category;
 import immortal.librarymanagementsystem.Exceptions.ResourceNotFoundException;
 import immortal.librarymanagementsystem.Repositories.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,9 +39,10 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryResponseDTO> readAllCategories() {
-        List<Category> categories = categoryRepository.findAll();
-        return categories.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    public Page<CategoryResponseDTO> readAllCategories(int page , int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Category> categories = categoryRepository.findAll(pageable);
+        return categories.map(this::ConvertToResponseDTO);
     }
 
     @Override

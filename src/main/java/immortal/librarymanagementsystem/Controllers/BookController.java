@@ -4,6 +4,7 @@ import immortal.librarymanagementsystem.DTOs.Book.BookRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Book.BookResponseDTO;
 import immortal.librarymanagementsystem.Services.BookService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,10 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookResponseDTO>> getAllBooks(){
-        List<BookResponseDTO> books = bookService.readAllBooks();
+    public ResponseEntity<Page<BookResponseDTO>> getAllBooks(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size){
+
+        Page<BookResponseDTO> books = bookService.readAllBooks(page,size);
 
         return ResponseEntity.ok(books);
 
@@ -70,13 +73,17 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookResponseDTO>> searchBooks(
+    public ResponseEntity<Page<BookResponseDTO>> searchBooks(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Long authorId,
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) Boolean availableOnly) {
+            @RequestParam(required = false) Boolean availableOnly,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        return ResponseEntity.ok(bookService.searchBook(title, authorId, categoryId, availableOnly));
+        Page<BookResponseDTO> books = bookService.searchBook(title, authorId, categoryId, availableOnly,page,size);
+
+        return ResponseEntity.ok(books);
     }
 
 

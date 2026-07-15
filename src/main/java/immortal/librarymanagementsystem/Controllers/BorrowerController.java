@@ -4,6 +4,7 @@ import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerRequestDTO;
 import immortal.librarymanagementsystem.DTOs.Borrower.BorrowerResponseDTO;
 import immortal.librarymanagementsystem.Services.BorrowerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,9 @@ public class BorrowerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BorrowerResponseDTO>> getAllBorrowers(){
-        List<BorrowerResponseDTO> borrowers = borrowerService.readAllBorrowers();
+    public ResponseEntity<Page<BorrowerResponseDTO>> getAllBorrowers(@RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size){
+        Page<BorrowerResponseDTO> borrowers = borrowerService.readAllBorrowers(page,size);
 
         return ResponseEntity.ok(borrowers);
 
