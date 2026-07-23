@@ -7,7 +7,7 @@ public class Category {
     @Column(nullable = false)
     private String name;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     public Category(String name, Long id) {

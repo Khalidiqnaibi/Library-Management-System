@@ -7,7 +7,7 @@ public class Author {
     @Column(nullable = false)
     private String name;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     public Author(Long id, String name) {

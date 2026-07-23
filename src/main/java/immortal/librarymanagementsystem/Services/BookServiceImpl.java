@@ -44,9 +44,10 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookResponseDTO> readAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return books.stream().map(this::ConvertToResponseDTO).collect(Collectors.toList());
+    public Page<BookResponseDTO> readAllBooks(int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Book> books = bookRepository.findAll(pageable);
+        return books.map(this::ConvertToResponseDTO);
     }
 
     @Override
